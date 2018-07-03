@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.work.finance.mapper.UserRoleMapper">
+
+    <select id="selectUserNameByRoleId" resultType="hashmap">
+        SELECT
+            user.id,
+            user.work_no      workNo,
+            user.name,
+            user.real_name AS realName,
+            user.email
+        FROM user
+            JOIN user_role ON user.id = user_role.user_id
+        WHERE user_role.role_id = #{roleId}
+              AND `user`.depart_id = #{deptId}
+    </select>
+</mapper>

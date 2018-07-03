@@ -1,0 +1,26 @@
+pipeline:
+  build:
+    image: maven:3.5.3-jdk-8-alpine
+    commands:
+      - mvn clean package -Dmaven.test.skip -B
+    volumes: 
+      - /tmp/cache/mvn:/root/.m2  
+  deploy:
+    image: byrnedo/alpine-curl
+    commands:
+      - curl -X POST "http://ydtitans.tinyvoice.net/auto/u/59/p/0bc8b494-5f5d-11e8-821f-eeeeeeeeeeee/buildAndPublish?version=v0.1&publishId=2283"
+    when:
+      branch: [ yd_titans ]
+  notify:
+    image: chcloud/drone-email
+    host: smtp.changhong.com
+    port: 465
+    skip_verify: true
+    username: dev_support@changhong.com
+    from: '"Drone自动化部署" <dev_support@changhong.com>'
+    recipients: [ wenlong.pu@changhong.com, wei9.li@changhong.com, shuai.kong@changhong.com ]
+    secrets: [ email_password ]
+    when:
+      status: [ changed, failure ]
+branches:
+  include: [ master, develop ,yd_titans]

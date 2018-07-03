@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.work.finance.mapper.UserMapper">
+
+
+	<sql id="table">user</sql>
+	<sql id="columns">id,name,email,mobile,is_admin,is_manager,status,create_time,update_time,real_name,depart_id,is_active,work_no,work_station</sql>
+	<sql id="columnsv2">id,`name`,email,mobile,is_admin,status,create_time,update_time,real_name,depart_id,is_active,work_no,work_station,gender,location,lvl,is_book</sql>
+	<resultMap type="com.work.finance.entity.User" id="resultMap">
+	</resultMap>
+
+    <select id="selectByWorkNo" resultMap="resultMap">
+        SELECT <include refid="columns"></include> FROM
+        <include refid="table"></include>
+        where work_no = #{workNo}
+    </select>
+
+    <select id="getUserRole" parameterType="java.lang.String" resultType="com.work.finance.entity.User">
+        SELECT
+            r.id        AS roleId,
+            r.`name`    AS roleName,
+            u.id,
+            u.name,
+            u.real_name AS realName,
+            u.depart_id AS departId
+        FROM `user` u,
+            user_role ur,
+            role r
+        WHERE ur.user_id = u.id
+              AND r.id = ur.role_id
+              AND u.is_active = 0
+              AND u.work_no = #{workNo}
+    </select>
+
+    <select id="selectNameById" resultType="string">
+        SELECT real_name FROM <include refid="table"></include>
+        where id = #{id}
+    </select>
+    
+    <select id="selectAll" resultType="hashmap">
+        select id,`name`,real_name realName,work_no workNo from <include refid="table"></include> where is_active=0
+    </select>
+
+</mapper>

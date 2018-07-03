@@ -1,0 +1,63 @@
+spring:
+    datasource:
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://172.17.123.191:3306/workbook_2?useUnicode=true&characterEncoding=utf-8
+          username: workbook_2
+          password: workbook_220180613
+          hikari:
+            max-lifetime: 60000
+            maximum-pool-size: 10
+            idle-timeout: 60000
+            connection-timeout: 60000
+            validation-timeout: 3000
+            login-timeout: 5
+    redis:
+        host: 10.3.93.216
+        port: 6379
+        #redis获取连接时限,单位:毫秒
+        timeout: 5000
+        #缓存内容过期时间,单位:秒
+        expire: 1800
+    mvc:
+      view:
+        prefix: /
+        suffix: .html
+    #URI默认编码
+    http:
+      encoding:
+        force: true
+        charset: utf-8
+        enabled: true
+      converters:
+        preferred-json-mapper: fastjson
+    aop:
+      proxy-target-class: true
+server:
+    port: 8081
+ldap:
+    location: ldap://202.98.157.5:8006/
+    authentication: simple
+    timeout: 1500
+    baseUserDN: ou=users,dc=changhong,dc=com
+logging:
+    level.com.work.manager: debug
+    level.java.sql: debug
+common:
+    token: E98D2F001DA5678B39482EFBDF5770DC
+    supplyDate: 10
+    tmpLocation: /Users/Jat
+#分页插件配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  auto-runtime-dialect: true
+  params: count=countSql
+#mybatis mapper文件路径
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+#通用mapper设置
+mapper:
+  mappers: com.work.finance.util.mybatis.BaseMapper
+  not-empty: true
+  before: true
